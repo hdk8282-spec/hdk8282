@@ -1,0 +1,14 @@
+# 생성된 출력 파일 (용량 크므로 제외)
+output_kr.gbc
+output_with_font.gbc
+font_data.bin
+
+# Python 캐시
+__pycache__/
+*.pyc
+
+# 덤프 데이터 (용량 크므로 제외, 사용자가 직접 생성)
+dump/
+
+# 번역 파일 (사용자별 작업)
+translated/
