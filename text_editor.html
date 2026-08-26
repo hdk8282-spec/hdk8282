@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pia Carrot 2.2 - 번역 편집기</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; background: #1a1a2e; color: #eee; }
+
+.header { background: #16213e; padding: 15px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+.header h1 { font-size: 18px; color: #e94560; margin-bottom: 8px; }
+.header h1 span { color: #53a8b6; font-size: 13px; }
+
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 8px; }
+.toolbar input, .toolbar select { padding: 8px 12px; border: 1px solid #333; border-radius: 5px; background: #0f3460; color: #fff; font-size: 14px; }
+.toolbar input { flex: 1; min-width: 200px; }
+.toolbar select { min-width: 130px; }
+
+.toolbar button { padding: 8px 16px; border: none; border-radius: 5px; font-size: 13px; cursor: pointer; font-weight: bold; transition: all 0.2s; }
+.btn-save { background: #e94560; color: #fff; }
+.btn-save:hover { background: #ff6b81; }
+.btn-load { background: #0f3460; color: #fff; border: 1px solid #53a8b6 !important; }
+.btn-load:hover { background: #53a8b6; }
+.btn-nav { background: #0f3460; color: #fff; border: 1px solid #333 !important; padding: 8px 12px; }
+.btn-nav:hover { background: #333; }
+.btn-nav:disabled { opacity: 0.3; cursor: default; }
+
+.stats { color: #888; font-size: 12px; display: flex; gap: 15px; flex-wrap: wrap; }
+.stats .done { color: #a8e6cf; }
+.stats .remaining { color: #ffb8c6; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 15px; }
+
+.text-block { background: #16213e; border-radius: 8px; margin-bottom: 12px; padding: 15px; border-left: 4px solid #333; transition: all 0.2s; }
+.text-block.translated { border-left-color: #a8e6cf; }
+.text-block.active { border-left-color: #e94560; background: #1a2a4a; }
+
+.block-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.block-header .offset { color: #53a8b6; font-family: monospace; font-size: 12px; }
+.block-header .bank { color: #e94560; font-size: 11px; }
+.block-header .idx { color: #666; font-size: 11px; }
+
+.text-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 768px) { .text-row { grid-template-columns: 1fr; } }
+
+.text-col { padding: 10px; border-radius: 6px; }
+.text-col.jp { background: rgba(233, 69, 96, 0.08); border: 1px solid rgba(233, 69, 96, 0.2); }
+.text-col.kr { background: rgba(83, 168, 182, 0.08); border: 1px solid rgba(83, 168, 182, 0.2); }
+
+.text-col label { display: block; font-size: 10px; color: #888; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+.text-col pre { white-space: pre-wrap; word-break: break-all; font-size: 14px; line-height: 1.7; }
+.text-col.jp pre { color: #ffb8c6; }
+
+.text-col textarea { width: 100%; min-height: 80px; padding: 10px; border: 1px solid #333; border-radius: 4px; background: #0f3460; color: #a8e6cf; font-size: 14px; line-height: 1.7; font-family: 'Malgun Gothic', monospace; resize: vertical; }
+.text-col textarea:focus { outline: none; border-color: #53a8b6; box-shadow: 0 0 8px rgba(83, 168, 182, 0.3); }
+.text-col textarea::placeholder { color: #4a5568; }
+
+.control-hint { margin-top: 6px; font-size: 10px; color: #555; }
+.control-hint code { background: #0f3460; padding: 1px 4px; border-radius: 2px; color: #53a8b6; }
+
+.loading { text-align: center; padding: 50px; color: #666; font-size: 18px; }
+
+.toast { position: fixed; bottom: 30px; right: 30px; background: #a8e6cf; color: #1a1a2e; padding: 12px 20px; border-radius: 8px; font-weight: bold; display: none; z-index: 999; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+.toast.show { display: block; animation: fadeIn 0.3s; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.progress-bar { height: 3px; background: #333; margin-top: 8px; border-radius: 2px; overflow: hidden; }
+.progress-bar .fill { height: 100%; background: linear-gradient(90deg, #e94560, #53a8b6); transition: width 0.3s; }
+
+.filter-btns { display: flex; gap: 5px; }
+.filter-btns button { padding: 4px 10px; font-size: 11px; border-radius: 3px; border: 1px solid #333; background: transparent; color: #888; cursor: pointer; }
+.filter-btns button.active { background: #e94560; color: #fff; border-color: #e94560; }
+
+#fileInput { display: none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎮 Pia Carrot 2.2 번역 편집기 <span>| 일본어 보면서 바로 번역 입력</span></h1>
+    <div class="toolbar">
+        <input type="text" id="search" placeholder="🔍 검색..." oninput="filterTexts()">
+        <select id="bankFilter" onchange="filterTexts()">
+            <option value="all">전체 뱅크</option>
+        </select>
+        <div class="filter-btns">
+            <button onclick="setFilter('all')" id="filterAll" class="active">전체</button>
+            <button onclick="setFilter('untranslated')" id="filterUntranslated">미번역</button>
+            <button onclick="setFilter('translated')" id="filterTranslated">번역완료</button>
+        </div>
+        <button class="btn-nav" onclick="prevPage()" id="prevBtn">◀</button>
+        <span style="color:#888;font-size:12px;" id="pageInfo">1/1</span>
+        <button class="btn-nav" onclick="nextPage()" id="nextBtn">▶</button>
+        <button class="btn-load" onclick="document.getElementById('fileInput').click()">📂 불러오기</button>
+        <button class="btn-save" onclick="saveJSON()">💾 저장 (JSON)</button>
+    </div>
+    <div class="stats">
+        <span>총 <strong id="totalCount">0</strong>개</span>
+        <span class="done">✅ 번역완료: <strong id="doneCount">0</strong></span>
+        <span class="remaining">⬜ 미번역: <strong id="remainCount">0</strong></span>
+        <span>진행률: <strong id="progressPct">0%</strong></span>
+    </div>
+    <div class="progress-bar"><div class="fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="container" id="content">
+    <div class="loading">📂 데이터 로딩 중...</div>
+</div>
+
+<div class="toast" id="toast">저장되었습니다!</div>
+<input type="file" id="fileInput" accept=".json" onchange="loadJSON(event)">
+
+<script>
+let allData = [];
+let filteredData = [];
+let translations = {}; // offset -> translation text
+let currentPage = 0;
+let currentFilter = 'all';
+const PAGE_SIZE = 50;
+
+// 데이터 로드
+fetch('text_viewer_data.json')
+    .then(r => r.json())
+    .then(data => {
+        allData = data;
+        
+        // 기존 자동번역을 기본값으로
+        data.forEach(item => {
+            if (item.kr && item.kr.trim()) {
+                translations[item.offset] = item.kr;
+            }
+        });
+        
+        // 뱅크 필터 옵션
+        const banks = [...new Set(data.map(d => d.bank))].sort((a,b) => a-b);
+        const select = document.getElementById('bankFilter');
+        banks.forEach(b => {
+            const opt = document.createElement('option');
+            opt.value = b;
+            opt.textContent = `Bank ${b} (${data.filter(d=>d.bank===b).length})`;
+            select.appendChild(opt);
+        });
+        
+        filterTexts();
+    })
+    .catch(err => {
+        document.getElementById('content').innerHTML = 
+            `<div class="loading">❌ text_viewer_data.json 로드 실패<br><br>
+            <small style="color:#666">이 HTML 파일과 같은 폴더에<br>text_viewer_data.json이 있어야 합니다.</small></div>`;
+    });
+
+function setFilter(type) {
+    currentFilter = type;
+    document.querySelectorAll('.filter-btns button').forEach(b => b.classList.remove('active'));
+    document.getElementById('filter' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active');
+    filterTexts();
+}
+
+function filterTexts() {
+    const query = document.getElementById('search').value.toLowerCase();
+    const bank = document.getElementById('bankFilter').value;
+    
+    filteredData = allData.filter(item => {
+        // 뱅크 필터
+        if (bank !== 'all' && item.bank !== parseInt(bank)) return false;
+        
+        // 번역 상태 필터
+        const hasTranslation = translations[item.offset] && translations[item.offset].trim();
+        if (currentFilter === 'translated' && !hasTranslation) return false;
+        if (currentFilter === 'untranslated' && hasTranslation) return false;
+        
+        // 검색
+        if (!query) return true;
+        const tr = translations[item.offset] || '';
+        return item.jp.toLowerCase().includes(query) || 
+               tr.toLowerCase().includes(query) ||
+               item.offset.toLowerCase().includes(query);
+    });
+    
+    currentPage = 0;
+    renderPage();
+    updateStats();
+}
+
+function updateStats() {
+    const total = allData.length;
+    const done = Object.values(translations).filter(t => t && t.trim()).length;
+    const remain = total - done;
+    const pct = total > 0 ? Math.round(done / total * 100) : 0;
+    
+    document.getElementById('totalCount').textContent = total.toLocaleString();
+    document.getElementById('doneCount').textContent = done.toLocaleString();
+    document.getElementById('remainCount').textContent = remain.toLocaleString();
+    document.getElementById('progressPct').textContent = pct + '%';
+    document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function renderPage() {
+    const start = currentPage * PAGE_SIZE;
+    const end = Math.min(start + PAGE_SIZE, filteredData.length);
+    const pageData = filteredData.slice(start, end);
+    const totalPages = Math.ceil(filteredData.length / PAGE_SIZE);
+    
+    document.getElementById('pageInfo').textContent = `${currentPage + 1}/${totalPages || 1}`;
+    document.getElementById('prevBtn').disabled = currentPage === 0;
+    document.getElementById('nextBtn').disabled = currentPage >= totalPages - 1;
+    
+    let html = '';
+    pageData.forEach((item, idx) => {
+        const globalIdx = start + idx;
+        const tr = translations[item.offset] || '';
+        const hasTranslation = tr.trim().length > 0;
+        const jpDisplay = escapeHtml(item.jp).replace(/\n/g, '<span style="color:#555">↵</span>\n');
+        
+        html += `
+        <div class="text-block ${hasTranslation ? 'translated' : ''}" id="block-${globalIdx}">
+            <div class="block-header">
+                <span class="idx">#${globalIdx + 1}</span>
+                <span class="offset">${item.offset}</span>
+                <span class="bank">Bank ${item.bank}</span>
+            </div>
+            <div class="text-row">
+                <div class="text-col jp">
+                    <label>日本語 원문 (추정)</label>
+                    <pre>${jpDisplay}</pre>
+                </div>
+                <div class="text-col kr">
+                    <label>한국어 번역</label>
+                    <textarea 
+                        placeholder="여기에 한국어 번역을 입력하세요..."
+                        data-offset="${item.offset}"
+                        oninput="onTranslationInput(this)"
+                        onfocus="this.closest('.text-block').classList.add('active')"
+                        onblur="this.closest('.text-block').classList.remove('active')"
+                    >${escapeHtml(tr)}</textarea>
+                    <div class="control-hint">
+                        줄바꿈: 그냥 Enter | 제어코드: <code>[END]</code> <code>[NEWLINE]</code> <code>[PAGE]</code> <code>{이름}</code>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    });
+    
+    document.getElementById('content').innerHTML = html || '<div class="loading">표시할 텍스트가 없습니다.</div>';
+}
+
+function onTranslationInput(textarea) {
+    const offset = textarea.dataset.offset;
+    translations[offset] = textarea.value;
+    
+    // 스타일 업데이트
+    const block = textarea.closest('.text-block');
+    if (textarea.value.trim()) {
+        block.classList.add('translated');
+    } else {
+        block.classList.remove('translated');
+    }
+    
+    updateStats();
+}
+
+function prevPage() { if (currentPage > 0) { currentPage--; renderPage(); window.scrollTo(0, 0); } }
+function nextPage() { 
+    const totalPages = Math.ceil(filteredData.length / PAGE_SIZE);
+    if (currentPage < totalPages - 1) { currentPage++; renderPage(); window.scrollTo(0, 0); } 
+}
+
+// JSON 저장
+function saveJSON() {
+    const output = allData.map(item => ({
+        id: `B${item.bank}_${item.offset}`,
+        offset: item.offset,
+        bank: item.bank,
+        japanese: item.jp,
+        translation: translations[item.offset] || '',
+    }));
+    
+    const blob = new Blob([JSON.stringify(output, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'pia_carrot_translation.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    showToast('💾 pia_carrot_translation.json 저장됨!');
+}
+
+// JSON 불러오기
+function loadJSON(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const data = JSON.parse(e.target.result);
+            
+            // 형식 자동 감지
+            if (Array.isArray(data)) {
+                data.forEach(item => {
+                    if (item.offset && item.translation) {
+                        translations[item.offset] = item.translation;
+                    }
+                });
+            } else if (typeof data === 'object') {
+                // {offset: text} 형식
+                Object.entries(data).forEach(([key, val]) => {
+                    if (typeof val === 'string') {
+                        translations[key] = val;
+                    } else if (val.translation) {
+                        translations[key] = val.translation;
+                    }
+                });
+            }
+            
+            filterTexts();
+            showToast(`📂 ${file.name} 불러오기 완료!`);
+        } catch (err) {
+            showToast('❌ 파일 형식 오류: ' + err.message);
+        }
+    };
+    reader.readAsText(file);
+    event.target.value = ''; // 같은 파일 재선택 가능하게
+}
+
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// 키보드 단축키
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        saveJSON();
+    }
+    if (e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT') {
+        if (e.key === 'ArrowLeft') prevPage();
+        if (e.key === 'ArrowRight') nextPage();
+    }
+});
+
+// 자동 저장 (localStorage)
+setInterval(() => {
+    try {
+        localStorage.setItem('pia_carrot_translations', JSON.stringify(translations));
+    } catch(e) {}
+}, 30000); // 30초마다
+
+// 시작 시 localStorage에서 복원
+try {
+    const saved = localStorage.getItem('pia_carrot_translations');
+    if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Object.keys(parsed).length > 0) {
+            translations = { ...translations, ...parsed };
+        }
+    }
+} catch(e) {}
+</script>
+</body>
+</html>
