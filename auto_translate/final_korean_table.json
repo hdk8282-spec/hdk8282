@@ -1,0 +1,667 @@
+{
+  "이": {
+    "char_code": 0,
+    "page": 0,
+    "hex": "00 00"
+  },
+  "름": {
+    "char_code": 1,
+    "page": 0,
+    "hex": "01 00"
+  },
+  "은": {
+    "char_code": 2,
+    "page": 0,
+    "hex": "02 00"
+  },
+  "우": {
+    "char_code": 3,
+    "page": 0,
+    "hex": "03 00"
+  },
+  "나": {
+    "char_code": 4,
+    "page": 0,
+    "hex": "04 00"
+  },
+  "토": {
+    "char_code": 5,
+    "page": 0,
+    "hex": "05 00"
+  },
+  "테": {
+    "char_code": 6,
+    "page": 0,
+    "hex": "06 00"
+  },
+  "디": {
+    "char_code": 7,
+    "page": 0,
+    "hex": "07 00"
+  },
+  "도": {
+    "char_code": 8,
+    "page": 0,
+    "hex": "08 00"
+  },
+  "아": {
+    "char_code": 9,
+    "page": 0,
+    "hex": "09 00"
+  },
+  "니": {
+    "char_code": 10,
+    "page": 0,
+    "hex": "0A 00"
+  },
+  "모": {
+    "char_code": 11,
+    "page": 0,
+    "hex": "0B 00"
+  },
+  "하": {
+    "char_code": 12,
+    "page": 0,
+    "hex": "0C 00"
+  },
+  "시": {
+    "char_code": 13,
+    "page": 0,
+    "hex": "0D 00"
+  },
+  "카": {
+    "char_code": 14,
+    "page": 0,
+    "hex": "0E 00"
+  },
+  "오": {
+    "char_code": 15,
+    "page": 0,
+    "hex": "0F 00"
+  },
+  "타": {
+    "char_code": 16,
+    "page": 0,
+    "hex": "10 00"
+  },
+  " ": {
+    "char_code": 17,
+    "page": 0,
+    "hex": "11 00"
+  },
+  "치": {
+    "char_code": 18,
+    "page": 0,
+    "hex": "12 00"
+  },
+  "사": {
+    "char_code": 19,
+    "page": 0,
+    "hex": "13 00"
+  },
+  "루": {
+    "char_code": 20,
+    "page": 0,
+    "hex": "14 00"
+  },
+  "기": {
+    "char_code": 21,
+    "page": 0,
+    "hex": "15 00"
+  },
+  "어": {
+    "char_code": 22,
+    "page": 0,
+    "hex": "16 00"
+  },
+  "노": {
+    "char_code": 23,
+    "page": 0,
+    "hex": "17 00"
+  },
+  "스": {
+    "char_code": 24,
+    "page": 0,
+    "hex": "18 00"
+  },
+  "요": {
+    "char_code": 25,
+    "page": 0,
+    "hex": "19 00"
+  },
+  "에": {
+    "char_code": 26,
+    "page": 0,
+    "hex": "1A 00"
+  },
+  "그": {
+    "char_code": 27,
+    "page": 0,
+    "hex": "1B 00"
+  },
+  "없": {
+    "char_code": 28,
+    "page": 0,
+    "hex": "1C 00"
+  },
+  "케": {
+    "char_code": 29,
+    "page": 0,
+    "hex": "1D 00"
+  },
+  "네": {
+    "char_code": 30,
+    "page": 0,
+    "hex": "1E 00"
+  },
+  "쿠": {
+    "char_code": 31,
+    "page": 0,
+    "hex": "1F 00"
+  },
+  "마": {
+    "char_code": 32,
+    "page": 0,
+    "hex": "20 00"
+  },
+  "바": {
+    "char_code": 33,
+    "page": 0,
+    "hex": "21 00"
+  },
+  "야": {
+    "char_code": 34,
+    "page": 0,
+    "hex": "22 00"
+  },
+  "리": {
+    "char_code": 35,
+    "page": 0,
+    "hex": "23 00"
+  },
+  "코": {
+    "char_code": 36,
+    "page": 0,
+    "hex": "24 00"
+  },
+  "라": {
+    "char_code": 37,
+    "page": 0,
+    "hex": "25 00"
+  },
+  "키": {
+    "char_code": 38,
+    "page": 0,
+    "hex": "26 00"
+  },
+  "부": {
+    "char_code": 39,
+    "page": 0,
+    "hex": "27 00"
+  },
+  "로": {
+    "char_code": 40,
+    "page": 0,
+    "hex": "28 00"
+  },
+  ",": {
+    "char_code": 41,
+    "page": 0,
+    "hex": "29 00"
+  },
+  "터": {
+    "char_code": 42,
+    "page": 0,
+    "hex": "2A 00"
+  },
+  "미": {
+    "char_code": 43,
+    "page": 0,
+    "hex": "2B 00"
+  },
+  "레": {
+    "char_code": 44,
+    "page": 0,
+    "hex": "2C 00"
+  },
+  "즈": {
+    "char_code": 45,
+    "page": 0,
+    "hex": "2D 00"
+  },
+  "다": {
+    "char_code": 46,
+    "page": 0,
+    "hex": "2E 00"
+  },
+  "것": {
+    "char_code": 47,
+    "page": 0,
+    "hex": "2F 00"
+  },
+  "래": {
+    "char_code": 48,
+    "page": 0,
+    "hex": "30 00"
+  },
+  "와": {
+    "char_code": 49,
+    "page": 0,
+    "hex": "31 00"
+  },
+  "소": {
+    "char_code": 50,
+    "page": 0,
+    "hex": "32 00"
+  },
+  "는": {
+    "char_code": 51,
+    "page": 0,
+    "hex": "33 00"
+  },
+  "츠": {
+    "char_code": 52,
+    "page": 0,
+    "hex": "34 00"
+  },
+  "해": {
+    "char_code": 53,
+    "page": 0,
+    "hex": "35 00"
+  },
+  "자": {
+    "char_code": 54,
+    "page": 0,
+    "hex": "36 00"
+  },
+  "메": {
+    "char_code": 55,
+    "page": 0,
+    "hex": "37 00"
+  },
+  "거": {
+    "char_code": 56,
+    "page": 0,
+    "hex": "38 00"
+  },
+  "까": {
+    "char_code": 57,
+    "page": 0,
+    "hex": "39 00"
+  },
+  "고": {
+    "char_code": 58,
+    "page": 0,
+    "hex": "3A 00"
+  },
+  "일": {
+    "char_code": 59,
+    "page": 0,
+    "hex": "3B 00"
+  },
+  "면": {
+    "char_code": 60,
+    "page": 0,
+    "hex": "3C 00"
+  },
+  "지": {
+    "char_code": 61,
+    "page": 0,
+    "hex": "3D 00"
+  },
+  "응": {
+    "char_code": 62,
+    "page": 0,
+    "hex": "3E 00"
+  },
+  "가": {
+    "char_code": 63,
+    "page": 0,
+    "hex": "3F 00"
+  },
+  "게": {
+    "char_code": 64,
+    "page": 0,
+    "hex": "40 00"
+  },
+  "비": {
+    "char_code": 65,
+    "page": 0,
+    "hex": "41 00"
+  },
+  "피": {
+    "char_code": 66,
+    "page": 0,
+    "hex": "42 00"
+  },
+  "저": {
+    "char_code": 67,
+    "page": 0,
+    "hex": "43 00"
+  },
+  "합": {
+    "char_code": 68,
+    "page": 0,
+    "hex": "44 00"
+  },
+  "제": {
+    "char_code": 69,
+    "page": 0,
+    "hex": "45 00"
+  },
+  "후": {
+    "char_code": 70,
+    "page": 0,
+    "hex": "46 00"
+  },
+  "유": {
+    "char_code": 71,
+    "page": 0,
+    "hex": "47 00"
+  },
+  "푸": {
+    "char_code": 72,
+    "page": 0,
+    "hex": "48 00"
+  },
+  "호": {
+    "char_code": 73,
+    "page": 0,
+    "hex": "49 00"
+  },
+  "세": {
+    "char_code": 74,
+    "page": 0,
+    "hex": "4A 00"
+  },
+  "습": {
+    "char_code": 75,
+    "page": 0,
+    "hex": "4B 00"
+  },
+  "싶": {
+    "char_code": 76,
+    "page": 0,
+    "hex": "4C 00"
+  },
+  "한": {
+    "char_code": 77,
+    "page": 0,
+    "hex": "4D 00"
+  },
+  "할": {
+    "char_code": 78,
+    "page": 0,
+    "hex": "4E 00"
+  },
+  "든": {
+    "char_code": 79,
+    "page": 0,
+    "hex": "4F 00"
+  },
+  "줘": {
+    "char_code": 80,
+    "page": 0,
+    "hex": "50 00"
+  },
+  "밖": {
+    "char_code": 81,
+    "page": 0,
+    "hex": "51 00"
+  },
+  "페": {
+    "char_code": 0,
+    "page": 1,
+    "hex": "00 01"
+  },
+  "헤": {
+    "char_code": 1,
+    "page": 1,
+    "hex": "01 01"
+  },
+  "보": {
+    "char_code": 2,
+    "page": 1,
+    "hex": "02 01"
+  },
+  "렇": {
+    "char_code": 3,
+    "page": 1,
+    "hex": "03 01"
+  },
+  "뭐": {
+    "char_code": 4,
+    "page": 1,
+    "hex": "04 01"
+  },
+  "않": {
+    "char_code": 5,
+    "page": 1,
+    "hex": "05 01"
+  },
+  "했": {
+    "char_code": 6,
+    "page": 1,
+    "hex": "06 01"
+  },
+  "있": {
+    "char_code": 7,
+    "page": 1,
+    "hex": "07 01"
+  },
+  "파": {
+    "char_code": 8,
+    "page": 1,
+    "hex": "08 01"
+  },
+  "히": {
+    "char_code": 9,
+    "page": 1,
+    "hex": "09 01"
+  },
+  "좋": {
+    "char_code": 10,
+    "page": 1,
+    "hex": "0A 01"
+  },
+  "베": {
+    "char_code": 11,
+    "page": 1,
+    "hex": "0B 01"
+  },
+  "건": {
+    "char_code": 12,
+    "page": 1,
+    "hex": "0C 01"
+  },
+  "무": {
+    "char_code": 13,
+    "page": 1,
+    "hex": "0D 01"
+  },
+  "금": {
+    "char_code": 14,
+    "page": 1,
+    "hex": "0E 01"
+  },
+  "데": {
+    "char_code": 15,
+    "page": 1,
+    "hex": "0F 01"
+  },
+  "여": {
+    "char_code": 16,
+    "page": 1,
+    "hex": "10 01"
+  },
+  "두": {
+    "char_code": 17,
+    "page": 1,
+    "hex": "11 01"
+  },
+  "주": {
+    "char_code": 18,
+    "page": 1,
+    "hex": "12 01"
+  },
+  "었": {
+    "char_code": 19,
+    "page": 1,
+    "hex": "13 01"
+  },
+  "언": {
+    "char_code": 20,
+    "page": 1,
+    "hex": "14 01"
+  },
+  "침": {
+    "char_code": 21,
+    "page": 1,
+    "hex": "15 01"
+  },
+  "구": {
+    "char_code": 22,
+    "page": 1,
+    "hex": "16 01"
+  },
+  "인": {
+    "char_code": 23,
+    "page": 1,
+    "hex": "17 01"
+  },
+  "잘": {
+    "char_code": 24,
+    "page": 1,
+    "hex": "18 01"
+  },
+  "쨌": {
+    "char_code": 25,
+    "page": 1,
+    "hex": "19 01"
+  },
+  "만": {
+    "char_code": 26,
+    "page": 1,
+    "hex": "1A 01"
+  },
+  "되": {
+    "char_code": 27,
+    "page": 1,
+    "hex": "1B 01"
+  },
+  "물": {
+    "char_code": 28,
+    "page": 1,
+    "hex": "1C 01"
+  },
+  "론": {
+    "char_code": 29,
+    "page": 1,
+    "hex": "1D 01"
+  },
+  "조": {
+    "char_code": 30,
+    "page": 1,
+    "hex": "1E 01"
+  },
+  "뻐": {
+    "char_code": 31,
+    "page": 1,
+    "hex": "1F 01"
+  },
+  "신": {
+    "char_code": 32,
+    "page": 1,
+    "hex": "20 01"
+  },
+  "당": {
+    "char_code": 33,
+    "page": 1,
+    "hex": "21 01"
+  },
+  "말": {
+    "char_code": 34,
+    "page": 1,
+    "hex": "22 01"
+  },
+  "정": {
+    "char_code": 35,
+    "page": 1,
+    "hex": "23 01"
+  },
+  "혼": {
+    "char_code": 36,
+    "page": 1,
+    "hex": "24 01"
+  },
+  "워": {
+    "char_code": 37,
+    "page": 1,
+    "hex": "25 01"
+  },
+  "포": {
+    "char_code": 38,
+    "page": 1,
+    "hex": "26 01"
+  },
+  "많": {
+    "char_code": 39,
+    "page": 1,
+    "hex": "27 01"
+  },
+  "외": {
+    "char_code": 40,
+    "page": 1,
+    "hex": "28 01"
+  },
+  "을": {
+    "char_code": 41,
+    "page": 1,
+    "hex": "29 01"
+  },
+  "귀": {
+    "char_code": 42,
+    "page": 1,
+    "hex": "2A 01"
+  },
+  "내": {
+    "char_code": 43,
+    "page": 1,
+    "hex": "2B 01"
+  },
+  "누": {
+    "char_code": 44,
+    "page": 1,
+    "hex": "2C 01"
+  },
+  "예": {
+    "char_code": 45,
+    "page": 1,
+    "hex": "2D 01"
+  },
+  "른": {
+    "char_code": 46,
+    "page": 1,
+    "hex": "2E 01"
+  },
+  "으": {
+    "char_code": 47,
+    "page": 1,
+    "hex": "2F 01"
+  },
+  "왜": {
+    "char_code": 48,
+    "page": 1,
+    "hex": "30 01"
+  },
+  "서": {
+    "char_code": 49,
+    "page": 1,
+    "hex": "31 01"
+  },
+  "랑": {
+    "char_code": 50,
+    "page": 1,
+    "hex": "32 01"
+  }
+}
