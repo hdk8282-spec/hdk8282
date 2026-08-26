@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pia Carrot 2.2 - 텍스트 뷰어</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; background: #1a1a2e; color: #eee; }
+.header { background: #16213e; padding: 15px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+.header h1 { font-size: 18px; color: #e94560; margin-bottom: 10px; }
+.controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.controls input, .controls select { padding: 8px 12px; border: 1px solid #333; border-radius: 5px; background: #0f3460; color: #fff; font-size: 14px; }
+.controls input { flex: 1; min-width: 200px; }
+.controls select { min-width: 150px; }
+.stats { color: #888; font-size: 12px; margin-top: 8px; }
+.container { max-width: 1200px; margin: 0 auto; padding: 15px; }
+.text-block { background: #16213e; border-radius: 8px; margin-bottom: 10px; padding: 12px 15px; border-left: 3px solid #e94560; transition: all 0.2s; }
+.text-block:hover { background: #1a2a4a; border-left-color: #53a8b6; }
+.block-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 11px; color: #666; }
+.block-header .offset { color: #53a8b6; font-family: monospace; }
+.block-header .bank { color: #e94560; }
+.text-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.text-col { padding: 8px; border-radius: 4px; }
+.text-col.jp { background: rgba(233, 69, 96, 0.1); }
+.text-col.kr { background: rgba(83, 168, 182, 0.1); }
+.text-col label { display: block; font-size: 10px; color: #888; margin-bottom: 4px; text-transform: uppercase; }
+.text-col pre { white-space: pre-wrap; word-break: break-all; font-size: 13px; line-height: 1.6; font-family: 'Malgun Gothic', monospace; }
+.text-col.jp pre { color: #ffb8c6; }
+.text-col.kr pre { color: #a8e6cf; }
+.highlight { background: #e94560; color: #fff; padding: 0 2px; border-radius: 2px; }
+.loading { text-align: center; padding: 50px; color: #666; font-size: 18px; }
+.page-nav { display: flex; gap: 5px; align-items: center; }
+.page-nav button { padding: 6px 12px; background: #0f3460; border: 1px solid #333; color: #fff; border-radius: 4px; cursor: pointer; }
+.page-nav button:hover { background: #e94560; }
+.page-nav button:disabled { opacity: 0.3; cursor: default; }
+.page-nav span { color: #888; font-size: 12px; }
+#count { color: #53a8b6; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="header">
+    <h1>🎮 Pia Carrot he Youkoso!! 2.2 - 텍스트 뷰어</h1>
+    <div class="controls">
+        <input type="text" id="search" placeholder="🔍 검색 (일본어/한국어/오프셋)..." oninput="filterTexts()">
+        <select id="bankFilter" onchange="filterTexts()">
+            <option value="all">전체 뱅크</option>
+        </select>
+        <div class="page-nav">
+            <button onclick="prevPage()" id="prevBtn">◀ 이전</button>
+            <span id="pageInfo">1/1</span>
+            <button onclick="nextPage()" id="nextBtn">다음 ▶</button>
+        </div>
+    </div>
+    <div class="stats">
+        총 <span id="count">0</span>개 텍스트 블록 | 페이지당 100개 표시
+    </div>
+</div>
+<div class="container" id="content">
+    <div class="loading">📂 데이터 로딩 중...</div>
+</div>
+
+<script>
+let allData = [];
+let filteredData = [];
+let currentPage = 0;
+const PAGE_SIZE = 100;
+
+// 데이터 로드
+fetch('text_viewer_data.json')
+    .then(r => r.json())
+    .then(data => {
+        allData = data;
+        filteredData = data;
+        
+        // 뱅크 필터 옵션 생성
+        const banks = [...new Set(data.map(d => d.bank))].sort((a,b) => a-b);
+        const select = document.getElementById('bankFilter');
+        banks.forEach(b => {
+            const opt = document.createElement('option');
+            opt.value = b;
+            opt.textContent = `Bank ${b}`;
+            select.appendChild(opt);
+        });
+        
+        renderPage();
+    })
+    .catch(err => {
+        document.getElementById('content').innerHTML = 
+            `<div class="loading">❌ 데이터 로드 실패. text_viewer_data.json 파일이 같은 폴더에 있어야 합니다.</div>`;
+    });
+
+function filterTexts() {
+    const query = document.getElementById('search').value.toLowerCase();
+    const bank = document.getElementById('bankFilter').value;
+    
+    filteredData = allData.filter(item => {
+        if (bank !== 'all' && item.bank !== parseInt(bank)) return false;
+        if (!query) return true;
+        return item.jp.toLowerCase().includes(query) || 
+               item.kr.toLowerCase().includes(query) ||
+               item.offset.toLowerCase().includes(query);
+    });
+    
+    currentPage = 0;
+    renderPage();
+}
+
+function renderPage() {
+    const start = currentPage * PAGE_SIZE;
+    const end = Math.min(start + PAGE_SIZE, filteredData.length);
+    const pageData = filteredData.slice(start, end);
+    const totalPages = Math.ceil(filteredData.length / PAGE_SIZE);
+    
+    document.getElementById('count').textContent = filteredData.length.toLocaleString();
+    document.getElementById('pageInfo').textContent = `${currentPage + 1}/${totalPages || 1}`;
+    document.getElementById('prevBtn').disabled = currentPage === 0;
+    document.getElementById('nextBtn').disabled = currentPage >= totalPages - 1;
+    
+    const query = document.getElementById('search').value;
+    
+    let html = '';
+    pageData.forEach(item => {
+        let jp = escapeHtml(item.jp);
+        let kr = escapeHtml(item.kr);
+        
+        if (query) {
+            jp = highlightText(jp, query);
+            kr = highlightText(kr, query);
+        }
+        
+        jp = jp.replace(/\n/g, '<span style="color:#666">↵</span>\n');
+        kr = kr.replace(/\n/g, '<span style="color:#666">↵</span>\n');
+        
+        html += `
+        <div class="text-block">
+            <div class="block-header">
+                <span class="offset">${item.offset}</span>
+                <span class="bank">Bank ${item.bank}</span>
+            </div>
+            <div class="text-row">
+                <div class="text-col jp">
+                    <label>日本語 (원문)</label>
+                    <pre>${jp}</pre>
+                </div>
+                <div class="text-col kr">
+                    <label>한국어 (번역)</label>
+                    <pre>${kr}</pre>
+                </div>
+            </div>
+        </div>`;
+    });
+    
+    document.getElementById('content').innerHTML = html || '<div class="loading">검색 결과가 없습니다.</div>';
+}
+
+function prevPage() { if (currentPage > 0) { currentPage--; renderPage(); window.scrollTo(0, 0); } }
+function nextPage() { 
+    const totalPages = Math.ceil(filteredData.length / PAGE_SIZE);
+    if (currentPage < totalPages - 1) { currentPage++; renderPage(); window.scrollTo(0, 0); } 
+}
+
+function escapeHtml(text) {
+    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function highlightText(text, query) {
+    if (!query) return text;
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return text.replace(regex, '<span class="highlight">$1</span>');
+}
+
+// 키보드 단축키
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') prevPage();
+    if (e.key === 'ArrowRight') nextPage();
+    if (e.key === '/' && !e.ctrlKey) { e.preventDefault(); document.getElementById('search').focus(); }
+});
+</script>
+</body>
+</html>
